@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="{{ url_for('static', filename='styles/rented_bikes.css') }}" rel="stylesheet" type="text/css">
+    {% include 'head.html' %}
+</head>
+<body>
+{% include 'header.html' %}
+
+<h2>Your Rented Bikes</h2>
+<div class="bike-container">
+    <div class="bike-list">
+        {% for rented_bike in rented_bikes %}
+        <div class="bike">
+            <img alt="{{ rented_bike.bike.name }}" class="bike-image" src="{{ rented_bike.bike.image_url }}">
+            <div class="bike-details">
+                <h3>{{ rented_bike.bike.name }}</h3>
+                <p><strong>Model:</strong> {{ rented_bike.bike.model }}</p>
+                <p><strong>Year:</strong> {{ rented_bike.bike.year }}</p>
+                <p><strong>Start Date:</strong> {{ rented_bike.start_date.strftime('%m/%d/%Y') }}</p>
+                <p><strong>End Date:</strong> {{ rented_bike.end_date.strftime('%m/%d/%Y') }}</p>
+                <p><strong>Rental Days:</strong> {{ rented_bike.rental_days }}</p>
+                <p><strong>Decorations:</strong> {{ rented_bike.decorations }}</p>
+                {% if is_admin %}
+                <p><strong>User_ID:</strong> {{ rented_bike.user_id }}</p>
+                <p><strong>User Fullname:</strong> {{ rented_bike.user.full_name }}</p>
+                {% endif %}
+
+                <p class="total-price"><strong>Total Price:</strong> ${{ rented_bike.total_price }}</p>
+                <form action="/delete-rental/{{ rented_bike.id }}" method="post">
+                    <button class="delete-btn" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+</body>
+</html>
